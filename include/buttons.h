@@ -6,8 +6,11 @@
 #define BUTTONS_H
 #include <functional>
 
-std::function<void(int button)> addButtonCallback(int gpio, std::function<void(int button)> callback);
+int addButtonCallback(int gpio, const std::function<void(int button)>& callback);
 void removeButtonCallback(int gpio, const std::function<void(int button)>& callback);
+
+void buttonsSetup();
+void buttonsLoop();
 
 #define MACRO_KEY_1 1
 #define MACRO_KEY_2 2
@@ -27,23 +30,6 @@ void removeButtonCallback(int gpio, const std::function<void(int button)>& callb
 #define MACRO_KEY_16 17
 #include <set>
 
-auto keys = std::set<int> {
-    MACRO_KEY_1,
-    MACRO_KEY_2,
-    MACRO_KEY_3,
-    MACRO_KEY_4,
-    MACRO_KEY_5,
-    MACRO_KEY_6,
-    MACRO_KEY_7,
-    MACRO_KEY_8,
-    MACRO_KEY_9,
-    MACRO_KEY_10,
-    MACRO_KEY_11,
-    MACRO_KEY_12,
-    MACRO_KEY_13,
-    MACRO_KEY_14,
-    MACRO_KEY_15,
-    MACRO_KEY_16,
-};
+extern std::set<int> DEFINED_BUTTONS;
 
 #endif //BUTTONS_H
