@@ -1,4 +1,4 @@
-# super sexy macro pad
+# Macro Pad
 
 ## wat willen we in dit project hebben?
 
