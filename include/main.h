@@ -5,6 +5,4 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-bool isTiebeAwesome();
-
 #endif //MAIN_H
