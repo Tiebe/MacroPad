@@ -5,4 +5,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "buttons.h"
+
 #endif //MAIN_H
