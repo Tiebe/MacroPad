@@ -6,6 +6,6 @@
 #define MAIN_H
 
 #include <Arduino.h>
-#include "buttons.h"
+#include "buttons/buttons.h"
 
 #endif //MAIN_H

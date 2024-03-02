@@ -2,9 +2,8 @@
 // Created by tiebe on 2/26/24.
 //
 
-//#include "buttons.h"
 #include "main.h"
-#include "buttons.h"
+#include "buttons/buttons.h"
 
 #include <functional>
 #include <list>
