@@ -26,5 +26,7 @@
 - plus verbinden met ronde
 
 
-afmeting 
-70.60 mm
+# afmeting 
+total length: 70.60 mm
+switch length: 14 mm
+beam length: (70.6 - 4(14))/3 = 4+(13/15) ≈ 4.86 mm
