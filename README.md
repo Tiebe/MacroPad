@@ -24,3 +24,7 @@
 **Ignore this, tiebe stupid**
 - ground verbinden met vierkant
 - plus verbinden met ronde
+
+
+afmeting 
+70.60 mm
