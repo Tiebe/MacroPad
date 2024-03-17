@@ -6,7 +6,8 @@
 #define MACROPAD_API_H
 
 #include <HTTPClient.h>
+#include <map>
 
-HTTPClient http;
+int send(const std::string& path, const std::map<std::string, std::string>& arguments);
 
 #endif //MACROPAD_API_H
