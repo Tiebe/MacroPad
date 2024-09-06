@@ -9,7 +9,7 @@
 #include <unordered_set>
 #include <vector>
 
-int addButtonCallback(int gpio, const std::function<void(int button)>& callback);
+int addButtonCallback(int gpio, int mode, const std::function<void(int button)>& callback);
 void removeButtonCallback(int id);
 
 void buttonsSetup();
