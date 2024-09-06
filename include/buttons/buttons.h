@@ -9,8 +9,8 @@
 #include <unordered_set>
 #include <vector>
 
-int addButtonCallback(int gpio, const std::function<void(int button)>& callback, bool withFn);
-void removeButtonCallback(int id, bool withFn);
+int addButtonCallback(int gpio, const std::function<void(int button)>& callback);
+void removeButtonCallback(int id);
 
 void buttonsSetup();
 void buttonsLoop();
@@ -33,6 +33,7 @@ void buttonsLoop();
 #define MACRO_KEY_16 17
 
 #define FN_BUTTON MACRO_KEY_16
+#define CONTROL_BUTTON MACRO_KEY_13
 #include <set>
 
 struct ButtonData {
