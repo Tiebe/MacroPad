@@ -5,6 +5,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "buttons.h"
+#include <Arduino.h>
+#include "buttons/buttons.h"
 
 #endif //MAIN_H
