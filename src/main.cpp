@@ -1,6 +1,6 @@
 #include "main.h"
 #include "buttons/buttons.h"
-#include "subghz/subghz.h"
+#include "usb/usb.h"
 
 void setup() {
     Serial.begin(112500);
@@ -9,8 +9,18 @@ void setup() {
     delay(2500);
     Serial.println("Starting program...");
 
+    usbSetup();
     buttonsSetup();
-    //subghzSetup();
+
+    addButtonCallback(MACRO_KEY_1, [](int button) -> void {
+        uint8_t keycode[6] = {0};
+        keycode[0] = HID_KEY_A;
+
+        sendKey(0, keycode);
+        sleep(1);
+        
+    }, false);
+    
 
     Serial.println("checjk2");
 

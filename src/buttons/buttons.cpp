@@ -33,8 +33,8 @@ ButtonData* getButton(int button) {
     return std::find_if(std::begin(DEFINED_BUTTONS), std::end(DEFINED_BUTTONS), [button](const ButtonData& buttonData) { return buttonData.GPIO == button; });
 }
 
-std::map<int, std::pair<int, std::function<void(int button)>>> callbacks;
-std::map<int, std::pair<int, std::function<void(int button)>>> fn_callbacks;
+std::map<int, std::pair<int, std::function<void(int button, bool state)>>> callbacks;
+std::map<int, std::pair<int, std::function<void(int button, bool state)>>> fn_callbacks;
 
 
 /**
@@ -44,7 +44,7 @@ std::map<int, std::pair<int, std::function<void(int button)>>> fn_callbacks;
  * @param withFn If button is a shortcut using function button.
  * @return The unique id of the callback. Use this to remove the item.
  */
-int addButtonCallback(const int gpio, const std::function<void(int button)>& callback, const bool withFn) {
+int addButtonCallback(const int gpio, const std::function<void(int button, bool state)>& callback, const bool withFn) {
     if (getButton(gpio) == std::end(DEFINED_BUTTONS)) {
         throw std::invalid_argument("Button not found.");
     }
@@ -85,7 +85,7 @@ void buttonsSetup() {
 }
 
 // fn button, when pressed with another button, do other action
-void buttonsLoop() {
+void processButtons() {
     // loop through all buttons and get their values
     for (ButtonData& button : DEFINED_BUTTONS) {
         const bool newState = digitalRead(button.GPIO);
@@ -104,12 +104,20 @@ void buttonsLoop() {
 
                 for (const auto& callback : callbacksToCheck) {
                     if (callback.second.first == button.GPIO) {
-                        callback.second.second(button.state);
+                        callback.second.second(button.GPIO, button.state);
                     }
                 }
                 button.millisLastPressed = millis();
             }
         }
+    }
+}
+
+void buttonsLoop() {
+    static uint32_t ms = 0;
+    if (millis() - ms > 10) {
+        ms = millis();
+        processButtons();
     }
 }
 
