@@ -90,7 +90,7 @@ void processButtons() {
             if (digitalRead(FN_BUTTON) && !mode.empty) {
                 callbacks = mode.callbacks;
 
-                // TODO Make the LEDs reflect the mode change
+                mode.writeLedState();
 
                 button.millisLastPressed = millis();
                 DEFINED_BUTTONS[FN_BUTTON].millisLastPressed = millis();

@@ -18,6 +18,7 @@ public:
     ButtonMode();
     int addButtonCallback(const int gpio, const std::function<void(int button, bool state, bool controlState)>& callback);
     void removeButtonCallback(const int id);
+    void writeLedState();
 
 private:
     ButtonData* getButton(int button);

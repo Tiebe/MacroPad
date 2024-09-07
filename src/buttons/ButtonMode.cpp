@@ -63,6 +63,30 @@ public:
         callbacks.erase(id);
     }
 
+    /**
+     * @brief Call this function when switching modes to write the new LED state.
+     */
+    void writeLedState() {
+        std::string text = "LED State to write: " + this->ledState;
+        Serial.println(text.c_str());
+        int i = 0;
+        for (LEDData led& : DEFINED_LEDS) {
+            std::string text = (this->ledState >> i) & 0x1;
+            Serial.println(text.c_str());
+            if ((this->ledState >> i) & 0x1 == 1) {
+                std::string text = "Writing HIGH";
+                Serial.println(text.c_str());
+                digitalWrite(led.gpio, HIGH)
+            } else {
+                std::string text = "Writing LOW";
+                Serial.println(text.c_str());
+                digitalWrite(led.gpio, LOW)
+            }
+
+
+        }
+    }
+
 private:
     ButtonData* getButton(int button) {
         return std::find_if(std::begin(DEFINED_BUTTONS), std::end(DEFINED_BUTTONS), [button](const ButtonData& buttonData) { return buttonData.GPIO == button; });

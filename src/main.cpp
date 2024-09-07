@@ -12,6 +12,7 @@ void setup() {
 
     usbSetup();
     buttonsSetup();
+    ledsSetup();
 
     ButtonMode defaultMode(1);
 
@@ -25,9 +26,6 @@ void setup() {
     });
 
     addMode(defaultMode);
-    
-
-    Serial.println("checjk2");
 
     Serial.println("Check");
 }
