@@ -9,11 +9,14 @@
 #include <unordered_set>
 #include <vector>
 
-int addButtonCallback(int gpio, int mode, const std::function<void(int button)>& callback);
-void removeButtonCallback(int id);
-
 void buttonsSetup();
 void buttonsLoop();
+
+std::map<int, std::pair<int, std::function<void(int button, bool state)>>> callbacks;
+std::map<int, std::pair<int, ButtonMode>> buttonModes;
+
+int addMode(ButtonMode mode, int gpio);
+void removeMode(int id);
 
 #define MACRO_KEY_1 1
 #define MACRO_KEY_2 2

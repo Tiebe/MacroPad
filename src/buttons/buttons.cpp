@@ -4,6 +4,7 @@
 
 #include "main.h"
 #include "buttons/buttons.h"
+#include "buttons/ButtonMode.h"
 
 #include <functional>
 #include <list>
@@ -29,44 +30,45 @@ ButtonData DEFINED_BUTTONS[16] = {
     { MACRO_KEY_16, true, 0 }
 };
 
-ButtonData* getButton(int button) {
-    return std::find_if(std::begin(DEFINED_BUTTONS), std::end(DEFINED_BUTTONS), [button](const ButtonData& buttonData) { return buttonData.GPIO == button; });
-}
-
 std::map<int, std::pair<int, std::function<void(int button, bool state)>>> callbacks;
-int padMode = 0;
+std::map<int, std::pair<int, ButtonMode>> buttonModes;
 
 /**
- * @brief Add a callback for button presses.
- * @param gpio GPIO pin for this button. See <buttons.h> for a list.
- * @param mode Which padMode the buttons needs to be active in.
- * @param callback Callback that gets executed when button is pressed.
+ * @brief Add a mode.
+ * @param mode The mode to add.
+ * @param gpio The pin which when powered triggers the mode.
  * @return The unique id of the callback. Use this to remove the item.
- */
-int addButtonCallback(const int gpio, const int mode, const std::function<void(int button, bool state, bool controlState)>& callback) {
-    if (getButton(gpio) == std::end(DEFINED_BUTTONS)) {
-        throw std::invalid_argument("Button not found.");
-    }
+*/
+int addMode(ButtonMode mode, int gpio) {
     int next = 0;
-
 
     if (!callbacks.empty()) {
         next = callbacks.rbegin()->first + 1;
+    } else {
+        callbacks = mode.callbacks;
     }
 
-    callbacks.insert(std::make_pair(next, std::make_pair(gpio+(mode<<8), callback)));
+    buttonModes.insert(std::make_pair(next, std::make_pair(gpio, mode)));
 
     return next;
 }
 
 /**
- * \brief Remove a callback for button presses.
- * \param id The id of the callback to be removed.
- */
-void removeButtonCallback(const int id) {
-    callbacks.erase(id);
+* @brief Remove a mode.
+* @param id The id of the mode.
+*/
+void removeMode(int id) {
+    buttonModes.erase(id);
 }
 
+private ButtonMode checkModes(int gpio) {
+    for (const auto& mode : buttonModes) {
+        if (mode.second.first == gpio) {
+            return mode;
+        }
+    }
+    return ButtonMode();
+}
 
 void buttonsSetup() {
     for (const ButtonData button : DEFINED_BUTTONS) {
@@ -84,21 +86,25 @@ void processButtons() {
             button.state = newState;
 
             // If both button is pressed AND Fn is pressed, switch to mode
-            if (button.state && digitalRead(FN_BUTTON)) {
-                padMode = button.GPIO;
+            ButtonMode mode = checkModes(button.GPIO);
+            if (digitalRead(FN_BUTTON) && !mode.empty) {
+                callbacks = mode.callbacks;
+
+                // TODO Make the LEDs reflect the mode change
+
                 button.millisLastPressed = millis();
                 DEFINED_BUTTONS[FN_BUTTON].millisLastPressed = millis();
             }
 
             // only run callback on button release, not on press.
-            else if (newState == false && millis() - button.millisLastPressed > 50ul) {
+            else if (!newState && millis() - button.millisLastPressed > 50ul) {
                 std::string text = "Button GPIO " + std::to_string(button.GPIO) + " has been pressed after " + std::to_string(millis() - button.millisLastPressed) + "ms.";
                 Serial.println(text.c_str());
 
                 auto callbacksToCheck = callbacks;
 
                 for (const auto& callback : callbacksToCheck) {
-                    if (callback.second.first == button.GPIO+(padMode << 8)) {
+                    if (callback.second.first == button.GPIO) {
                         callback.second.second(button.GPIO, button.state, digitalRead(CONTROL_BUTTON));
                     }
                 }
