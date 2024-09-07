@@ -7,16 +7,19 @@
 #include <functional>
 #include <map>
 #include <unordered_set>
-#include <vector>
+
+#include "buttons/ButtonData.h"
+#include "buttons/ButtonMode.h"
 
 void buttonsSetup();
 void buttonsLoop();
 
-std::map<int, std::pair<int, std::function<void(int button, bool state)>>> callbacks;
-std::map<int, std::pair<int, ButtonMode>> buttonModes;
-
-int addMode(ButtonMode mode, int gpio);
+int addMode(ButtonMode& mode, int gpio);
 void removeMode(int id);
+
+
+extern std::map<int, std::pair<int, std::function<void(int button, bool state, bool controlState)>>> callbacks;
+extern std::map<int, std::pair<int, ButtonMode>> buttonModes;
 
 #define MACRO_KEY_1 1
 #define MACRO_KEY_2 2
@@ -38,12 +41,6 @@ void removeMode(int id);
 #define FN_BUTTON MACRO_KEY_16
 #define CONTROL_BUTTON MACRO_KEY_13
 #include <set>
-
-struct ButtonData {
-    int GPIO;
-    bool state;
-    unsigned long millisLastPressed;
-};
 
 inline bool operator<(const ButtonData& lhs, const ButtonData& rhs)
 {

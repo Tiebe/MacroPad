@@ -4,26 +4,33 @@
 
 #ifndef BUTTONMODE_H
 #define BUTTONMODE_H
+#include <functional>
+#include <map>
+#include <algorithm>
+#include <esp32-hal-gpio.h>
+#include <HWCDC.h>
+#include <map>
 
+#include "leds/leds.h"
+#include "buttons/ButtonData.h"
 
 
 class ButtonMode {
 public:
     int ledState;
     bool empty;
-    std::map<int, std::pair<int, std::function<void(int button, bool state)>>> callbacks;
+    std::map<int, std::pair<int, std::function<void(int button, bool state, bool controlState)>>> callbacks;
 
     ButtonMode(int led_state);
-    ButtonMode(int led_state, std::map<int, std::pair<int, std::function<void(int button, bool state)>>> buttonCallbacks);
+    ButtonMode(int led_state,
+               const std::map<int, std::pair<int, std::function<void(int button, bool state, bool controlState)>>>&
+               buttonCallbacks);
     ButtonMode();
-    int addButtonCallback(const int gpio, const std::function<void(int button, bool state, bool controlState)>& callback);
+    int addButtonCallback(int gpio, std::function<void(int button, bool state, bool controlState)> callback);
     void removeButtonCallback(const int id);
     void writeLedState();
 
-private:
     ButtonData* getButton(int button);
 };
-
-
 
 #endif //BUTTONMODE_H

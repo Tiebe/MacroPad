@@ -2,7 +2,8 @@
 #include "usb/usb.h"
 #include "Adafruit_TinyUSB.h"
 
-
+Adafruit_USBD_HID usb_keyboard;
+Adafruit_USBD_HID usb_mouse;
 
 void usbSetup() {
     if (!TinyUSBDevice.isInitialized()) {

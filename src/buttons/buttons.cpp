@@ -30,7 +30,7 @@ ButtonData DEFINED_BUTTONS[16] = {
     { MACRO_KEY_16, true, 0 }
 };
 
-std::map<int, std::pair<int, std::function<void(int button, bool state)>>> callbacks;
+std::map<int, std::pair<int, std::function<void(int button, bool state, bool controlState)>>> callbacks;
 std::map<int, std::pair<int, ButtonMode>> buttonModes;
 
 /**
@@ -39,7 +39,7 @@ std::map<int, std::pair<int, ButtonMode>> buttonModes;
  * @param gpio The pin which when powered triggers the mode.
  * @return The unique id of the callback. Use this to remove the item.
 */
-int addMode(ButtonMode mode, int gpio) {
+int addMode(ButtonMode& mode, int gpio) {
     int next = 0;
 
     if (!callbacks.empty()) {
@@ -61,10 +61,10 @@ void removeMode(int id) {
     buttonModes.erase(id);
 }
 
-private ButtonMode checkModes(int gpio) {
+ButtonMode checkModes(int gpio) {
     for (const auto& mode : buttonModes) {
         if (mode.second.first == gpio) {
-            return mode;
+            return mode.second.second;
         }
     }
     return ButtonMode();

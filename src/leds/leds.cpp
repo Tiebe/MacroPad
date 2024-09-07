@@ -4,6 +4,8 @@
 
 #include "leds/leds.h"
 
+#include <esp32-hal-gpio.h>
+
 LEDData DEFINED_LEDS[4] = {
         { LED_1, false },
         { LED_2, false },
