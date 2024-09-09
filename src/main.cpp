@@ -2,6 +2,7 @@
 #include "buttons/buttons.h"
 #include "buttons/ButtonMode.h"
 #include "leds/leds.h"
+#include "subghz/subghz.h"
 #include "usb/usb.h"
 
 void setup() {
@@ -14,6 +15,7 @@ void setup() {
     // usbSetup();
     buttonsSetup();
     ledsSetup();
+    subghzSetup();
 
     /*while (true)
     {
