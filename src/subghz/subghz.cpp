@@ -33,14 +33,14 @@ void subghzSetup() {
 }
 
 
-void sendRemoteCommand(const unsigned long remote, const Command command) {
+void sendRemoteCommand(const unsigned long remote, const Command command, const int repeat = 4) {
     ELECHOUSE_cc1101.setMHZ(SOMFY_FREQUENCY);
     ELECHOUSE_cc1101.SetTx();
     switch (remote) {
-        case REMOTE1: somfyRemote1.sendCommand(command); Serial.println("sent"); break;
-        case REMOTE2: somfyRemote2.sendCommand(command); break;
-        case REMOTE3: somfyRemote3.sendCommand(command); break;
-        case REMOTE4: somfyRemote4.sendCommand(command); break;
+        case REMOTE1: somfyRemote1.sendCommand(command, repeat); Serial.println("sent"); break;
+        case REMOTE2: somfyRemote2.sendCommand(command, repeat); break;
+        case REMOTE3: somfyRemote3.sendCommand(command, repeat); break;
+        case REMOTE4: somfyRemote4.sendCommand(command, repeat); break;
         default: Serial.println("Remote not found"); break;
     }
 

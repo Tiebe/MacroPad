@@ -2,6 +2,7 @@
 #include "buttons/buttons.h"
 #include "buttons/ButtonMode.h"
 #include "leds/leds.h"
+#include "modes/AVTControlMode.h"
 #include "subghz/subghz.h"
 #include "usb/usb.h"
 
@@ -66,6 +67,9 @@ void setup() {
     });
 
     addMode(defaultMode, MACRO_KEY_1);
+
+    auto avtControlMode = getAVTControlMode();
+    addMode(avtControlMode, MACRO_KEY_2);
 
     Serial.println("Setup Complete");
 }

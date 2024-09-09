@@ -26,7 +26,7 @@ public:
                const std::map<int, std::pair<int, std::function<void(int button, bool state, bool controlState)>>>&
                buttonCallbacks);
     ButtonMode();
-    int addButtonCallback(int gpio, std::function<void(int button, bool state, bool controlState)> callback);
+    int addButtonCallback(int gpio, const std::function<void(int button, bool state, bool controlState)>& callback);
     void removeButtonCallback(const int id);
     void writeLedState();
 

@@ -20,7 +20,7 @@
 #define DRAPE_FREQUENCY 433.92
 
 void subghzSetup();
-void sendRemoteCommand(unsigned long remote, Command command);
+void sendRemoteCommand(unsigned long remote, Command command, int repeat = 4);
 void sendBeamerCommand(Command command);
 void sendDrapeCommand(Command command);
 

@@ -28,6 +28,7 @@ ButtonMode::ButtonMode(int led_state, const std::map<int, std::pair<int, std::fu
 }
 
 ButtonMode::ButtonMode() {
+    ledState = 0;
     empty = true;
 }
 
@@ -37,7 +38,7 @@ ButtonMode::ButtonMode() {
 * @param callback Callback that gets executed when button is pressed.
 * @return The unique id of the callback. Use this to remove the item.
 */
-int ButtonMode::addButtonCallback(const int gpio, std::function<void(int button, bool state, bool controlState)> callback) {
+int ButtonMode::addButtonCallback(const int gpio, const std::function<void(int button, bool state, bool controlState)>& callback) {
     if (getButton(gpio) == std::end(DEFINED_BUTTONS)) {
         throw std::invalid_argument("Button not found.");
     }
