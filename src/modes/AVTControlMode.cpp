@@ -8,6 +8,7 @@
 
 #include "buttons/buttons.h"
 #include "subghz/subghz.h"
+#include "ir/ir.h"
 
 ButtonMode getAVTControlMode() {
     auto mode = ButtonMode(0b1000);
@@ -15,6 +16,7 @@ ButtonMode getAVTControlMode() {
 
     addSunCallbacks(mode);
     addBeamerDrapeCallbacks(mode);
+    addBeamerIRCallbacks(mode);
 
     return mode;
 }
@@ -86,4 +88,24 @@ void addBeamerDrapeCallbacks(ButtonMode &mode) {
     mode.addButtonCallback(MACRO_KEY_8, callback);
     mode.addButtonCallback(MACRO_KEY_11, callback);
     mode.addButtonCallback(MACRO_KEY_12, callback);
+}
+
+void addBeamerIRCallbacks(ButtonMode& mode) {
+    auto callback = [](const int button, const bool state, const bool controlState) {
+        if (!state) return;
+
+        int address = 0;
+        int command = 0;
+
+        switch (button) {
+            case MACRO_KEY_13: { address = 0x123456; command = 0x123458; break; }
+            case MACRO_KEY_14: { address = 0x123456; command = 0x123456; break; }
+            default: return;
+        }
+
+        sendNEC(address, command);
+    };
+
+    mode.addButtonCallback(MACRO_KEY_13, callback);
+    mode.addButtonCallback(MACRO_KEY_14, callback);
 }

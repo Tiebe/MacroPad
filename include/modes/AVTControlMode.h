@@ -9,5 +9,6 @@
 ButtonMode getAVTControlMode();
 void addSunCallbacks(ButtonMode &mode);
 void addBeamerDrapeCallbacks(ButtonMode &mode);
+void addBeamerIRCallbacks(ButtonMode &mode);
 
 #endif //AVTCONTROLMODE_H
