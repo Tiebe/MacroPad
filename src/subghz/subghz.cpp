@@ -33,7 +33,7 @@ void subghzSetup() {
 }
 
 
-void sendRemoteCommand(const unsigned long remote, const Command command, const int repeat = 4) {
+void sendRemoteCommand(const unsigned long remote, const Command command, const int repeat) {
     ELECHOUSE_cc1101.setMHZ(SOMFY_FREQUENCY);
     ELECHOUSE_cc1101.SetTx();
     switch (remote) {
