@@ -96,14 +96,14 @@ void processButtons() {
                 DEFINED_BUTTONS[FN_BUTTON].millisLastPressed = millis();
             }
 
-            // only run callback on button release, not on press.
-            else if (!newState && millis() - button.millisLastPressed > 50ul) {
+            else if (millis() - button.millisLastPressed > 50ul) {
                 std::string text = "Button GPIO " + std::to_string(button.GPIO) + " has been pressed after " + std::to_string(millis() - button.millisLastPressed) + "ms.";
-                Serial.println(text.c_str());
+                USBSerial.println(text.c_str());
 
                 auto callbacksToCheck = callbacks;
 
                 for (const auto& callback : callbacksToCheck) {
+                    USBSerial.println(callback.second.first == button.GPIO);
                     if (callback.second.first == button.GPIO) {
                         callback.second.second(button.GPIO, button.state, digitalRead(CONTROL_BUTTON));
                     }

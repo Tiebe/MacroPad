@@ -23,8 +23,8 @@ extern std::map<int, std::pair<int, ButtonMode>> buttonModes;
 
 #define MACRO_KEY_1 1
 #define MACRO_KEY_2 2
-#define MACRO_KEY_3 3
-#define MACRO_KEY_4 4
+#define MACRO_KEY_3 39
+#define MACRO_KEY_4 38
 #define MACRO_KEY_5 5
 #define MACRO_KEY_6 6
 #define MACRO_KEY_7 7

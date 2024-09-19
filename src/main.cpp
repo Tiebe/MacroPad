@@ -1,19 +1,21 @@
 #include "main.h"
 #include "buttons/buttons.h"
 #include "buttons/ButtonMode.h"
+#include "ir/ir.h"
 #include "leds/leds.h"
 #include "modes/AVTControlMode.h"
 #include "subghz/subghz.h"
 #include "usb/usb.h"
 
 void setup() {
-    Serial.begin(112500);
+    USBSerial.begin(112500);
 
     // wait for serial connection to settle
     delay(2500);
-    Serial.println("Starting program...");
+    USBSerial.println("Starting program...");
 
     // usbSetup();
+    IRSetup();
     buttonsSetup();
     ledsSetup();
     subghzSetup();
@@ -21,19 +23,19 @@ void setup() {
     /*while (true)
     {
         digitalWrite(LED_1, HIGH);
-        Serial.println("1");
+        USBSerial.println("1");
         delay(500);
         digitalWrite(LED_1, LOW);
         digitalWrite(LED_2, HIGH);
-        Serial.println("2");
+        USBSerial.println("2");
         delay(500);
         digitalWrite(LED_2, LOW);
         digitalWrite(LED_3, HIGH);
-        Serial.println("3");
+        USBSerial.println("3");
         delay(500);
         digitalWrite(LED_3, LOW);
         digitalWrite(LED_4, HIGH);
-        Serial.println("4");
+        USBSerial.println("4");
         delay(500);
         digitalWrite(LED_4, LOW);
     }*/
@@ -58,20 +60,20 @@ void setup() {
         }
     });
 
-    defaultMode.addButtonCallback(MACRO_KEY_2, [](int button, bool state, bool controlState) -> void {
-        if (controlState) {
-            digitalWrite(LED_2, LOW);
-        } else {
-            digitalWrite(LED_2, HIGH);
-        }
-    });
+    // defaultMode.addButtonCallback(MACRO_KEY_2, [](int button, bool state, bool controlState) -> void {
+    //     if (controlState) {
+    //         digitalWrite(LED_2, LOW);
+    //     } else {
+    //         digitalWrite(LED_2, HIGH);
+    //     }
+    // });
 
     addMode(defaultMode, MACRO_KEY_1);
 
     auto avtControlMode = getAVTControlMode();
     addMode(avtControlMode, MACRO_KEY_2);
 
-    Serial.println("Setup Complete");
+    USBSerial.println("Setup Complete");
 }
 
 void loop() {

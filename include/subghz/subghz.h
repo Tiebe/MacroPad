@@ -9,7 +9,13 @@
 #include <EEPROMRollingCodeStorage.h>
 #include <SomfyRemote.h>
 
-#define EMITTER_GPIO 13
+#define CSN 47
+#define SCK 40
+#define MISO 42
+#define MOSI 41
+
+#define GDO0 21
+#define GDO2 48
 #define REMOTE1 0x65dc00
 #define REMOTE2 0x25b5d5
 #define REMOTE3 0xc6c78f

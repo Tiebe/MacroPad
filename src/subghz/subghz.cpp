@@ -10,10 +10,10 @@ EEPROMRollingCodeStorage rollingCodeStorage1(0);
 EEPROMRollingCodeStorage rollingCodeStorage2(2);
 EEPROMRollingCodeStorage rollingCodeStorage3(4);
 EEPROMRollingCodeStorage rollingCodeStorage4(6);
-SomfyRemote somfyRemote1(EMITTER_GPIO, REMOTE1, &rollingCodeStorage1);
-SomfyRemote somfyRemote2(EMITTER_GPIO, REMOTE2, &rollingCodeStorage2);
-SomfyRemote somfyRemote3(EMITTER_GPIO, REMOTE3, &rollingCodeStorage3);
-SomfyRemote somfyRemote4(EMITTER_GPIO, REMOTE4, &rollingCodeStorage4);
+SomfyRemote somfyRemote1(GDO0, REMOTE1, &rollingCodeStorage1);
+SomfyRemote somfyRemote2(GDO0, REMOTE2, &rollingCodeStorage2);
+SomfyRemote somfyRemote3(GDO0, REMOTE3, &rollingCodeStorage3);
+SomfyRemote somfyRemote4(GDO0, REMOTE4, &rollingCodeStorage4);
 
 void subghzSetup() {
     somfyRemote1.setup();
@@ -21,14 +21,15 @@ void subghzSetup() {
     somfyRemote3.setup();
     somfyRemote4.setup();
 
-    Serial.println("test");
-    ELECHOUSE_cc1101.setSpiPin(7, 9, 11, 12);
-    Serial.println("test");
+    USBSerial.println("test");
+    ELECHOUSE_cc1101.setSpiPin(SCK, MISO, MOSI, CSN);
+    ELECHOUSE_cc1101.setGDO(GDO0, GDO2);
+    USBSerial.println("test");
     ELECHOUSE_cc1101.Init(); // <--- hangs here
-    Serial.println("test");
+    USBSerial.println("test");
 
     if (!EEPROM.begin(8)) {
-        Serial.println("EEPROM not found!");
+        USBSerial.println("EEPROM not found!");
     }
 }
 
@@ -37,11 +38,11 @@ void sendRemoteCommand(const unsigned long remote, const Command command, const 
     ELECHOUSE_cc1101.setMHZ(SOMFY_FREQUENCY);
     ELECHOUSE_cc1101.SetTx();
     switch (remote) {
-        case REMOTE1: somfyRemote1.sendCommand(command, repeat); Serial.println("sent"); break;
+        case REMOTE1: somfyRemote1.sendCommand(command, repeat); USBSerial.println("sent"); break;
         case REMOTE2: somfyRemote2.sendCommand(command, repeat); break;
         case REMOTE3: somfyRemote3.sendCommand(command, repeat); break;
         case REMOTE4: somfyRemote4.sendCommand(command, repeat); break;
-        default: Serial.println("Remote not found"); break;
+        default: USBSerial.println("Remote not found"); break;
     }
 
     ELECHOUSE_cc1101.setSidle();
@@ -51,10 +52,10 @@ void sendRawData(const int data[], const size_t size) {
     for (int i = 0; i < size; i++) {
         const int timing = data[i];
         if (timing >= 0) {
-            digitalWrite(EMITTER_GPIO, HIGH);
+            digitalWrite(GDO0, HIGH);
             delayMicroseconds(timing);
         } else {
-            digitalWrite(EMITTER_GPIO, LOW);
+            digitalWrite(GDO0, LOW);
             delayMicroseconds(timing*-1);
         }
 

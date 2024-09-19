@@ -7,6 +7,7 @@
 
 #define IR_SEND_PIN 3
 #define NO_LED_FEEDBACK_CODE
+#include <cstdint>
 
 void IRSetup();
 

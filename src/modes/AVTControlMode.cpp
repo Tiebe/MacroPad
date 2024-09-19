@@ -11,7 +11,7 @@
 #include "ir/ir.h"
 
 ButtonMode getAVTControlMode() {
-    auto mode = ButtonMode(0b1000);
+    auto mode = ButtonMode(0b1001);
     mode.writeLedState();
 
     addSunCallbacks(mode);
@@ -23,8 +23,11 @@ ButtonMode getAVTControlMode() {
 
 void addSunCallbacks(ButtonMode &mode) {
     auto callback = [](const int button, const bool state, const bool controlState) {
+        USBSerial.println("Sun Callback");
+
         if (!state) return;
 
+        USBSerial.println("Sun Callback");
         Command command;
         int remote;
         int repeat = 4;
@@ -40,6 +43,7 @@ void addSunCallbacks(ButtonMode &mode) {
         }
 
         if (controlState) {
+            USBSerial.println("Prog");
             command = Command::Prog;
             repeat = 10;
         }
@@ -94,12 +98,12 @@ void addBeamerIRCallbacks(ButtonMode& mode) {
     auto callback = [](const int button, const bool state, const bool controlState) {
         if (!state) return;
 
-        int address = 0;
-        int command = 0;
+        uint16_t address = 0;
+        uint16_t command = 0;
 
         switch (button) {
-            case MACRO_KEY_13: { address = 0x123456; command = 0x123458; break; }
-            case MACRO_KEY_14: { address = 0x123456; command = 0x123456; break; }
+            case MACRO_KEY_14: { address = 0x5583UL; command = 0x6F90UL; break; }
+            case MACRO_KEY_15: { address = 0x5583UL; command = 0x8C73UL; break; }
             default: return;
         }
 
