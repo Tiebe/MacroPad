@@ -6,14 +6,16 @@
 #include "modes/AVTControlMode.h"
 #include "subghz/subghz.h"
 #include "usb/usb.h"
+#include "wifi/wifi.h"
 
 void setup() {
     USBSerial.begin(112500);
 
     // wait for serial connection to settle
-    delay(2500);
+    delay(500);
     USBSerial.println("Starting program...");
 
+    wifiSetup();
     // usbSetup();
     IRSetup();
     buttonsSetup();
@@ -77,6 +79,6 @@ void setup() {
 }
 
 void loop() {
-
+    wifiLoop();
     buttonsLoop();
 }
