@@ -14,7 +14,7 @@
 void buttonsSetup();
 void buttonsLoop();
 
-int addMode(ButtonMode& mode, int gpio);
+uint addMode(ButtonMode& mode, int gpio);
 void removeMode(int id);
 
 

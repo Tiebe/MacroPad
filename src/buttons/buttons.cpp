@@ -39,14 +39,13 @@ std::map<int, std::pair<int, ButtonMode>> buttonModes;
  * @param gpio The pin which when powered triggers the mode.
  * @return The unique id of the callback. Use this to remove the item.
 */
-int addMode(ButtonMode& mode, int gpio) {
-    int next = 0;
-
-    if (!callbacks.empty()) {
-        next = callbacks.rbegin()->first + 1;
-    } else {
+uint addMode(ButtonMode& mode, int gpio) {
+    if (buttonModes.empty()) {
         callbacks = mode.callbacks;
+        mode.writeLedState();
     }
+
+    uint next = buttonModes.size() + 1;
 
     buttonModes.insert(std::make_pair(next, std::make_pair(gpio, mode)));
 
@@ -59,15 +58,6 @@ int addMode(ButtonMode& mode, int gpio) {
 */
 void removeMode(int id) {
     buttonModes.erase(id);
-}
-
-ButtonMode checkModes(int gpio) {
-    for (const auto& mode : buttonModes) {
-        if (mode.second.first == gpio) {
-            return mode.second.second;
-        }
-    }
-    return ButtonMode();
 }
 
 void buttonsSetup() {
@@ -85,30 +75,25 @@ void processButtons() {
         if (newState != button.state) {
             button.state = newState;
 
-            // If both button is pressed AND Fn is pressed, switch to mode
-            ButtonMode mode = checkModes(button.GPIO);
-            if (digitalRead(FN_BUTTON) && !mode.empty) {
-                callbacks = mode.callbacks;
+            if (button.state) {
+                if (digitalRead(FN_BUTTON) && button.GPIO != FN_BUTTON) {
+                    USBSerial.println("Mode switch");
 
-                mode.writeLedState();
+                    for (auto buttonModePair : buttonModes) {
+                        if (buttonModePair.second.first == button.GPIO) {
+                            callbacks = buttonModePair.second.second.callbacks;
+                            buttonModePair.second.second.writeLedState();
+                        }
+                    }
+                } else {
+                    USBSerial.println("Execute callback");
 
-                button.millisLastPressed = millis();
-                DEFINED_BUTTONS[FN_BUTTON].millisLastPressed = millis();
-            }
-
-            else if (millis() - button.millisLastPressed > 50ul) {
-                std::string text = "Button GPIO " + std::to_string(button.GPIO) + " has been pressed after " + std::to_string(millis() - button.millisLastPressed) + "ms.";
-                USBSerial.println(text.c_str());
-
-                auto callbacksToCheck = callbacks;
-
-                for (const auto& callback : callbacksToCheck) {
-                    USBSerial.println(callback.second.first == button.GPIO);
-                    if (callback.second.first == button.GPIO) {
-                        callback.second.second(button.GPIO, button.state, digitalRead(CONTROL_BUTTON));
+                    for (const auto& callback : callbacks) {
+                        if (callback.second.first == button.GPIO) {
+                            callback.second.second(button.GPIO, button.state, digitalRead(CONTROL_BUTTON));
+                        }
                     }
                 }
-                button.millisLastPressed = millis();
             }
         }
     }

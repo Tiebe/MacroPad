@@ -13,10 +13,10 @@ struct LEDData {
 void ledsSetup();
 
 
-#define LED_1 46
-#define LED_2 18
-#define LED_3 17
-#define LED_4 4
+#define LED_1 4
+#define LED_2 17
+#define LED_3 18
+#define LED_4 46
 
 extern LEDData DEFINED_LEDS[4];
 

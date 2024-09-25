@@ -66,25 +66,23 @@ void ButtonMode::removeButtonCallback(const int id) {
  * @brief Call this function when switching modes to write the new LED state.
  */
 void ButtonMode::writeLedState() {
-    const std::string text = "LED State to write: " + std::to_string(this->ledState);
-    USBSerial.println(text.c_str());
+    // const std::string text = "LED State to write: " + std::to_string(this->ledState);
+    // USBSerial.println(text.c_str());
     int i = 0;
     for (const LEDData led : DEFINED_LEDS) {
         if ((this->ledState >> i) & 0x1 == 1) {
-            std::string text = "Writing HIGH";
-            USBSerial.println(text.c_str());
+            // std::string text = "Writing HIGH";
+            // USBSerial.println(text.c_str());
             digitalWrite(led.GPIO, HIGH);
         } else {
-            std::string text = "Writing LOW";
-            USBSerial.println(text.c_str());
+            // std::string text = "Writing LOW";
+            // USBSerial.println(text.c_str());
             digitalWrite(led.GPIO, LOW);
         }
         i++;
     }
 }
 
-ButtonData* ButtonMode::getButton(int button)
-{
-
+ButtonData* ButtonMode::getButton(int button) {
     return std::find_if(std::begin(DEFINED_BUTTONS), std::end(DEFINED_BUTTONS), [button](const ButtonData& buttonData) { return buttonData.GPIO == button; });
 }
