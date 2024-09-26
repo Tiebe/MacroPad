@@ -8,6 +8,8 @@
 #include <HWCDC.h>
 #include <IRsend.h>
 
+#include "main.h"
+
 IRsend irSend(IR_SEND_PIN);
 
 void IRSetup() {
@@ -15,11 +17,11 @@ void IRSetup() {
 }
 
 void sendNEC(const uint16_t address, const uint16_t command) {
-    USBSerial.println("Sending NEC");
+    Serial.println("Sending NEC");
 
     irSend.sendNEC(irSend.encodeNEC(address, command), 32, 3);
 }
 
 void sendNECext(const uint16_t address, const uint16_t command) {
-    USBSerial.println("Sending NECext");
+    Serial.println("Sending NECext");
 }

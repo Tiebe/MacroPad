@@ -15,7 +15,7 @@
 //     WiFiClass::mode(WIFI_STA);
 //     WiFi.begin(ssid, password);
 //
-//     USBSerial.println("Connecting to WiFi...");
+//     Serial.println("Connecting to WiFi...");
 // }
 //
 // void wifiLoop() {
@@ -24,11 +24,11 @@
 //         ms = millis();
 //         if (WiFiClass::status() == WL_CONNECTED && !connected) {
 //             connected = true;
-//             USBSerial.print("Connected! IP: ");
-//             USBSerial.println(WiFi.localIP());
+//             Serial.print("Connected! IP: ");
+//             Serial.println(WiFi.localIP());
 //         } else if (WiFiClass::status() != WL_CONNECTED && connected) {
 //             connected = false;
-//             USBSerial.println("Disconnected!");
+//             Serial.println("Disconnected!");
 //         }
 //     }
 // }

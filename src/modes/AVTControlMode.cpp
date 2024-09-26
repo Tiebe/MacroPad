@@ -6,6 +6,7 @@
 
 #include <SomfyRemote.h>
 
+#include "main.h"
 #include "buttons/buttons.h"
 #include "subghz/subghz.h"
 #include "ir/ir.h"
@@ -23,11 +24,11 @@ ButtonMode getAVTControlMode() {
 
 void addSunCallbacks(ButtonMode &mode) {
     auto callback = [](const int button, const bool state, const bool controlState) {
-        USBSerial.println("Sun Callback");
+        Serial.println("Sun Callback");
 
         if (!state) return;
 
-        USBSerial.println("Sun Callback");
+        Serial.println("Sun Callback");
         Command command;
         int remote;
         int repeat = 4;
@@ -43,7 +44,7 @@ void addSunCallbacks(ButtonMode &mode) {
         }
 
         if (controlState) {
-            USBSerial.println("Prog");
+            Serial.println("Prog");
             command = Command::Prog;
             repeat = 10;
         }

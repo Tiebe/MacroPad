@@ -24,7 +24,56 @@ void usbSetup() {
     usb_mouse.setStringDescriptor("MacroPad USB Mouse");
     usb_mouse.begin();
 
+    if (TinyUSBDevice.mounted()) {
+        TinyUSBDevice.detach();
+        delay(10);
+        TinyUSBDevice.attach();
+    }
 }
+
+void usbLoop() {
+    if (TinyUSBDevice.mounted()) {
+        // poll gpio once each 2 ms
+        static uint32_t ms = 0;
+        if (millis() - ms > 2) {
+            ms = millis();
+            // used to avoid send multiple consecutive zero report for keyboard
+            static bool keyPressedPreviously = false;
+
+            uint8_t count = 0;
+            uint8_t keycode[6] = {0};
+
+            if (TinyUSBDevice.suspended() && count) {
+                // Wake up host if we are in suspend mode
+                // and REMOTE_WAKEUP feature is enabled by host
+                TinyUSBDevice.remoteWakeup();
+            }
+
+            // skip if hid is not ready e.g still transferring previous report
+            if (!usb_keyboard.ready()) return;
+
+            if (count) {
+                // Send report if there is key pressed
+                uint8_t const report_id = 0;
+                uint8_t const modifier = 0;
+
+                keyPressedPreviously = true;
+                printf("test");
+                Serial.println("Sending report");
+                usb_keyboard.keyboardReport(report_id, modifier, keycode);
+            } else {
+                // Send All-zero report to indicate there is no keys pressed
+                // Most of the time, it is, though we don't need to send zero report
+                // every loop(), only a key is pressed in previous loop()
+                if (keyPressedPreviously) {
+                    keyPressedPreviously = false;
+                    usb_keyboard.keyboardRelease(0);
+                }
+            }
+        }
+    }
+}
+
 
 bool sendKey(uint8_t reportId, uint8_t keycode[6]) {
     if (!usb_keyboard.ready()) return false;

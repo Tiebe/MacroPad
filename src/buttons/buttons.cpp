@@ -77,7 +77,7 @@ void processButtons() {
 
             if (button.state) {
                 if (digitalRead(FN_BUTTON) && button.GPIO != FN_BUTTON) {
-                    USBSerial.println("Mode switch");
+                    Serial.println("Mode switch");
 
                     for (auto buttonModePair : buttonModes) {
                         if (buttonModePair.second.first == button.GPIO) {
@@ -86,7 +86,7 @@ void processButtons() {
                         }
                     }
                 } else {
-                    USBSerial.println("Execute callback");
+                    Serial.println("Execute callback");
 
                     for (const auto& callback : callbacks) {
                         if (callback.second.first == button.GPIO) {

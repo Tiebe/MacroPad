@@ -8,34 +8,57 @@
 #include "usb/usb.h"
 //#include "wifi/wifi_manager.h"
 
+#include "Adafruit_TinyUSB.h"
+
 void setup() {
-    USBSerial.begin(112500);
+    Serial.begin(112500);
+
+    if (TinyUSBDevice.mounted()) {
+        TinyUSBDevice.detach();
+        delay(10);
+        TinyUSBDevice.attach();
+    }
+
+    Serial.println("Hello World");
+    Serial.println("Hello World");
 
     // wait for serial connection to settle
     delay(500);
-    USBSerial.println("Starting program...");
+    Serial.println("Starting program...");
+    Serial.println("Hello World");
+    Serial.println("Hello World");
+    Serial.println("Hello World");
 
-   // usbSetup();
+    usbSetup();
     IRSetup();
     buttonsSetup();
     ledsSetup();
-    // subghzSetup();
+    subghzSetup();
 
     while (true) {
         digitalWrite(LED_1, HIGH);
-        USBSerial.println("1");
+        Serial.println("1");
         delay(500);
+        if (digitalRead(FN_BUTTON)) {
+            break;
+        }
         digitalWrite(LED_1, LOW);
         digitalWrite(LED_2, HIGH);
-        USBSerial.println("2");
+        Serial.println("2");
         delay(500);
+        if (digitalRead(FN_BUTTON)) {
+            break;
+        }
         digitalWrite(LED_2, LOW);
         digitalWrite(LED_3, HIGH);
-        USBSerial.println("3");
+        Serial.println("3");
         delay(500);
+        if (digitalRead(FN_BUTTON)) {
+            break;
+        }
         digitalWrite(LED_3, LOW);
         digitalWrite(LED_4, HIGH);
-        USBSerial.println("4");
+        Serial.println("4");
         delay(500);
         digitalWrite(LED_4, LOW);
 
@@ -91,9 +114,7 @@ void setup() {
     addMode(mode4, MACRO_KEY_4);
     addMode(mode5, MACRO_KEY_5);
 
-
-
-    USBSerial.println("Setup Complete");
+    Serial.println("Setup Complete");
 }
 
 void loop() {
