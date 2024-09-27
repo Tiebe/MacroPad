@@ -75,13 +75,15 @@ void processButtons() {
         if (newState != button.state) {
             button.state = newState;
 
-            if (digitalRead(FN_BUTTON) && button.GPIO != FN_BUTTON && button.state) {
-                printf("Mode switch\n");
+            if (digitalRead(FN_BUTTON) && button.GPIO != FN_BUTTON) {
+                if (button.state) {
+                    printf("Mode switch\n");
 
-                for (auto buttonModePair : buttonModes) {
-                    if (buttonModePair.second.first == button.GPIO) {
-                        callbacks = buttonModePair.second.second.callbacks;
-                        buttonModePair.second.second.writeLedState();
+                    for (auto buttonModePair : buttonModes) {
+                        if (buttonModePair.second.first == button.GPIO) {
+                            callbacks = buttonModePair.second.second.callbacks;
+                            buttonModePair.second.second.writeLedState();
+                        }
                     }
                 }
             } else {
