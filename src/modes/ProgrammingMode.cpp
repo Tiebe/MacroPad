@@ -8,8 +8,8 @@
 #include "buttons/buttons.h"
 #include "usb/usb.h"
 
-ButtonMode getProgrammingMode() {
-    ButtonMode mode(2);
+ButtonMode getProgrammingMode(int button) {
+    ButtonMode mode(button);
 
     mode.addButtonCallback(MACRO_KEY_1, [](int button, const bool state, bool controlState) -> void {
         printf("Button 1 pressed\n");

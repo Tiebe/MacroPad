@@ -11,8 +11,8 @@
 #include "subghz/subghz.h"
 #include "ir/ir.h"
 
-ButtonMode getAVTControlMode() {
-    auto mode = ButtonMode(0b1001);
+ButtonMode getAVTControlMode(int button) {
+    auto mode = ButtonMode(button);
     mode.writeLedState();
 
     addSunCallbacks(mode);

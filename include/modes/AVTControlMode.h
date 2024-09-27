@@ -6,7 +6,7 @@
 #define AVTCONTROLMODE_H
 #include "buttons/ButtonMode.h"
 
-ButtonMode getAVTControlMode();
+ButtonMode getAVTControlMode(int button);
 void addSunCallbacks(ButtonMode &mode);
 void addBeamerDrapeCallbacks(ButtonMode &mode);
 void addBeamerIRCallbacks(ButtonMode &mode);

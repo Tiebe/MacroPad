@@ -7,7 +7,7 @@
 #include "buttons/ButtonMode.h"
 
 
-ButtonMode getProgrammingMode();
+ButtonMode getProgrammingMode(int button);
 
 
 
