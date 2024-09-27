@@ -20,6 +20,7 @@ ButtonMode getDeepSleepMode(int button) {
             digitalWrite(LED_4, HIGH);
             delay(200);
             printf("Bye bye o7\n");
+            delay(1000);
             esp_deep_sleep_start();
         // }
     });
