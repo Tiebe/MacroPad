@@ -17,11 +17,11 @@ void IRSetup() {
 }
 
 void sendNEC(const uint16_t address, const uint16_t command) {
-    Serial.println("Sending NEC");
+    printf("Sending NEC\n");
 
     irSend.sendNEC(irSend.encodeNEC(address, command), 32, 3);
 }
 
 void sendNECext(const uint16_t address, const uint16_t command) {
-    Serial.println("Sending NECext");
+    printf("Sending NECext\n");
 }

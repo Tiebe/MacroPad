@@ -24,11 +24,11 @@ ButtonMode getAVTControlMode() {
 
 void addSunCallbacks(ButtonMode &mode) {
     auto callback = [](const int button, const bool state, const bool controlState) {
-        Serial.println("Sun Callback");
+        printf("Sun Callback\n");
 
         if (!state) return;
 
-        Serial.println("Sun Callback");
+        printf("Sun Callback\n");
         Command command;
         int remote;
         int repeat = 4;
@@ -44,7 +44,7 @@ void addSunCallbacks(ButtonMode &mode) {
         }
 
         if (controlState) {
-            Serial.println("Prog");
+            printf("Prog\n");
             command = Command::Prog;
             repeat = 10;
         }

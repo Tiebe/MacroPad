@@ -67,16 +67,16 @@ void ButtonMode::removeButtonCallback(const int id) {
  */
 void ButtonMode::writeLedState() {
     // const std::string text = "LED State to write: " + std::to_string(this->ledState);
-    // Serial.println(text.c_str());
+    // printf(text.c_str());
     int i = 0;
     for (const LEDData led : DEFINED_LEDS) {
         if ((this->ledState >> i) & 0x1 == 1) {
             // std::string text = "Writing HIGH";
-            // Serial.println(text.c_str());
+            // printf(text.c_str());
             digitalWrite(led.GPIO, HIGH);
         } else {
             // std::string text = "Writing LOW";
-            // Serial.println(text.c_str());
+            // printf(text.c_str());
             digitalWrite(led.GPIO, LOW);
         }
         i++;

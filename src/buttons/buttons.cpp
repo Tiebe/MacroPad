@@ -75,23 +75,21 @@ void processButtons() {
         if (newState != button.state) {
             button.state = newState;
 
-            if (button.state) {
-                if (digitalRead(FN_BUTTON) && button.GPIO != FN_BUTTON) {
-                    Serial.println("Mode switch");
+            if (digitalRead(FN_BUTTON) && button.GPIO != FN_BUTTON && button.state) {
+                printf("Mode switch\n");
 
-                    for (auto buttonModePair : buttonModes) {
-                        if (buttonModePair.second.first == button.GPIO) {
-                            callbacks = buttonModePair.second.second.callbacks;
-                            buttonModePair.second.second.writeLedState();
-                        }
+                for (auto buttonModePair : buttonModes) {
+                    if (buttonModePair.second.first == button.GPIO) {
+                        callbacks = buttonModePair.second.second.callbacks;
+                        buttonModePair.second.second.writeLedState();
                     }
-                } else {
-                    Serial.println("Execute callback");
+                }
+            } else {
+                printf("Execute callback\n");
 
-                    for (const auto& callback : callbacks) {
-                        if (callback.second.first == button.GPIO) {
-                            callback.second.second(button.GPIO, button.state, digitalRead(CONTROL_BUTTON));
-                        }
+                for (const auto& callback : callbacks) {
+                    if (callback.second.first == button.GPIO) {
+                        callback.second.second(button.GPIO, button.state, digitalRead(CONTROL_BUTTON));
                     }
                 }
             }

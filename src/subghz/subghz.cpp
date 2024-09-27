@@ -29,32 +29,32 @@ void subghzSetup() {
     ELECHOUSE_cc1101.setSpiPin(SCK, MISO, MOSI, CSN);
     ELECHOUSE_cc1101.setGDO(GDO0, GDO2);
     if (ELECHOUSE_cc1101.getCC1101()) {
-        Serial.println("CC1101 found, initializing...");
+        printf("CC1101 found, initializing...\n");
         subghzInitialized = true;
     } else {
-        Serial.println("CC1101 not found, not initializing.");
+        printf("CC1101 not found, not initializing.\n");
     }
     ELECHOUSE_cc1101.Init();
 
     if (!EEPROM.begin(8)) {
-        Serial.println("EEPROM not found!");
+        printf("EEPROM not found!\n");
     }
 }
 
 
 void sendRemoteCommand(const unsigned long remote, const Command command, const int repeat) {
     if (!subghzInitialized) {
-        Serial.println("CC1101 not initialized, not sending command.");
+        printf("CC1101 not initialized, not sending command.\n");
         return;
     }
     ELECHOUSE_cc1101.setMHZ(SOMFY_FREQUENCY);
     ELECHOUSE_cc1101.SetTx();
     switch (remote) {
-        case REMOTE1: somfyRemote1.sendCommand(command, repeat); Serial.println("sent"); break;
+        case REMOTE1: somfyRemote1.sendCommand(command, repeat); printf("sent\n"); break;
         case REMOTE2: somfyRemote2.sendCommand(command, repeat); break;
         case REMOTE3: somfyRemote3.sendCommand(command, repeat); break;
         case REMOTE4: somfyRemote4.sendCommand(command, repeat); break;
-        default: Serial.println("Remote not found"); break;
+        default: printf("Remote not found\n"); break;
     }
 
     ELECHOUSE_cc1101.setSidle();
@@ -62,7 +62,7 @@ void sendRemoteCommand(const unsigned long remote, const Command command, const 
 
 void sendRawData(const int data[], const size_t size) {
     if (!subghzInitialized) {
-        Serial.println("CC1101 not initialized, not sending command.");
+        printf("CC1101 not initialized, not sending command.\n");
         return;
     }
     for (int i = 0; i < size; i++) {

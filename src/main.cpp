@@ -8,65 +8,19 @@
 #include "usb/usb.h"
 //#include "wifi/wifi_manager.h"
 
+#include <BLEDevice.h>
+
 #include "Adafruit_TinyUSB.h"
+#include "modes/ProgrammingMode.h"
 
 void setup() {
     Serial.begin(112500);
-
-    if (TinyUSBDevice.mounted()) {
-        TinyUSBDevice.detach();
-        delay(10);
-        TinyUSBDevice.attach();
-    }
-
-    Serial.println("Hello World");
-    Serial.println("Hello World");
-
-    // wait for serial connection to settle
-    delay(500);
-    Serial.println("Starting program...");
-    Serial.println("Hello World");
-    Serial.println("Hello World");
-    Serial.println("Hello World");
 
     usbSetup();
     IRSetup();
     buttonsSetup();
     ledsSetup();
     subghzSetup();
-
-    while (true) {
-        digitalWrite(LED_1, HIGH);
-        Serial.println("1");
-        delay(500);
-        if (digitalRead(FN_BUTTON)) {
-            break;
-        }
-        digitalWrite(LED_1, LOW);
-        digitalWrite(LED_2, HIGH);
-        Serial.println("2");
-        delay(500);
-        if (digitalRead(FN_BUTTON)) {
-            break;
-        }
-        digitalWrite(LED_2, LOW);
-        digitalWrite(LED_3, HIGH);
-        Serial.println("3");
-        delay(500);
-        if (digitalRead(FN_BUTTON)) {
-            break;
-        }
-        digitalWrite(LED_3, LOW);
-        digitalWrite(LED_4, HIGH);
-        Serial.println("4");
-        delay(500);
-        digitalWrite(LED_4, LOW);
-
-        if (digitalRead(FN_BUTTON)) {
-            break;
-        }
-    }
-
 
     ButtonMode mode1(1);
     ButtonMode mode2(2);
@@ -106,17 +60,18 @@ void setup() {
         digitalWrite(LED_4, LOW);
     });
 
-
+    ButtonMode programmingMode = getProgrammingMode();
 
     addMode(mode1, MACRO_KEY_1);
-    addMode(mode2, MACRO_KEY_2);
+    addMode(programmingMode, MACRO_KEY_2);
     addMode(mode3, MACRO_KEY_3);
     addMode(mode4, MACRO_KEY_4);
     addMode(mode5, MACRO_KEY_5);
 
-    Serial.println("Setup Complete");
+    printf("Setup Complete\n");
 }
 
 void loop() {
     buttonsLoop();
+    usbLoop();
 }

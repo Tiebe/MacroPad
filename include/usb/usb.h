@@ -15,4 +15,4 @@ extern Adafruit_USBD_HID usb_mouse;
 void usbSetup();
 void usbLoop();
 
-bool sendKey(uint8_t reportId, uint8_t keycode[6]);
+bool setKey(uint8_t key, bool state);
