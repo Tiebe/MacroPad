@@ -9,20 +9,9 @@ uint8_t const desc_hid_report[] = {
 // desc report, desc len, protocol, interval, use out endpoint
 Adafruit_USBD_HID usb_hid;
 
-void hid_report_callback(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
-    (void) report_id;
-    (void) bufsize;
-
-    // LED indicator is output report with only 1 byte length
-    if (report_type != HID_REPORT_TYPE_OUTPUT) return;
-
-    // The LED bit map is as follows: (also defined by KEYBOARD_LED_* )
-    // Kana (4) | Compose (3) | ScrollLock (2) | CapsLock (1) | Numlock (0)
-    uint8_t ledIndicator = buffer[0];
-
-    // turn on LED if capslock is set
-    digitalWrite(LED_BUILTIN, ledIndicator & KEYBOARD_LED_CAPSLOCK);
-}
+static uint8_t keyReport[6] = {0}; // Array to hold the current key states
+static bool keyPressed[256] = {false}; // Array to track pressed keys
+static uint8_t modifiers = 0; // Byte to hold the current modifier state
 
 void usbSetup() {
     if (!TinyUSBDevice.isInitialized()) {
@@ -34,9 +23,6 @@ void usbSetup() {
     usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
     usb_hid.setStringDescriptor("TinyUSB Keyboard");
 
-    // Set up output report (on control endpoint) for Capslock indicator
-    usb_hid.setReportCallback(NULL, hid_report_callback);
-
     usb_hid.begin();
 
     if (TinyUSBDevice.mounted()) {
@@ -45,10 +31,6 @@ void usbSetup() {
         TinyUSBDevice.attach();
     }
 }
-
-uint8_t keycode[6] = {0};
-bool keyPressed[6] = {false};
-bool keyPressedPreviously[6] = {false};
 
 void usbLoop() {
 #ifdef TINYUSB_NEED_POLLING_TASK
@@ -63,55 +45,48 @@ void usbLoop() {
             if (TinyUSBDevice.suspended()) {
                 // Wake up host if we are in suspend mode
                 // and REMOTE_WAKEUP feature is enabled by host
-                for (bool i : keyPressedPreviously) {
-                    if (i) {
-                        TinyUSBDevice.remoteWakeup();
-                        break;
-                    }
-                }
+                TinyUSBDevice.remoteWakeup();
             }
 
             // skip if hid is not ready e.g still transferring previous report
             if (!usb_hid.ready()) return;
 
-            for (uint8_t i = 0; i < 6; i++) {
-                if (keyPressed[i]) {
-                    // Send report if there is key pressed
-                    uint8_t const report_id = i;
-                    uint8_t const modifier = 0;
-
-                    keyPressedPreviously[i] = true;
-                    printf("Sending key %d\n", keycode[i]);
-                    printf(" at index %d\n", i);
-                    usb_hid.keyboardReport(report_id, modifier, &keycode[i]);
-                } else {
-                    // Send All-zero report to indicate there is no keys pressed
-                    // Most of the time, it is, though we don't need to send zero report
-                    // every loop(), only a key is pressed in previous loop()
-                    if (keyPressedPreviously[i]) {
-                        keyPressedPreviously[i] = false;
-                        usb_hid.keyboardRelease(i);
-                    }
-                }
-            }
+            // Send the key report
+            usb_hid.keyboardReport(0, modifiers, keyReport);
         }
     }
 }
 
 bool setKey(const uint8_t key, const bool pressed) {
-    for (uint8_t i = 0; i < 6; i++) {
+    if (key >= HID_KEY_CONTROL_LEFT && key <= HID_KEY_GUI_RIGHT) {
+        uint8_t mask = 1 << (key - HID_KEY_CONTROL_LEFT);
         if (pressed) {
-            if (!keyPressed[i]) {
-                keycode[i] = key;
-                keyPressed[i] = true;
-                return true;
-            }
+            modifiers |= mask;
         } else {
-            if (keyPressed[i] && keycode[i] == key) {
-                keyPressed[i] = false;
+            modifiers &= ~mask;
+        }
+        return true;
+    }
+
+    for (int i = 0; i < 6; i++) {
+        if (keyReport[i] == key) {
+            if (!pressed) {
+                keyReport[i] = 0;
+                keyPressed[key] = false;
+            }
+            return true;
+        }
+    }
+
+    if (pressed) {
+        for (int i = 0; i < 6; i++) {
+            if (keyReport[i] == 0) {
+                keyReport[i] = key;
+                keyPressed[key] = true;
                 return true;
             }
         }
     }
+
     return false;
 }
