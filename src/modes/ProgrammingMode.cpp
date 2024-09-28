@@ -15,11 +15,13 @@ ButtonMode getProgrammingMode(int button) {
     mode.addHIDButtonCallback(MACRO_KEY_1, {HID_KEY_SHIFT_LEFT, HID_KEY_F10});
     // debug button intellij
     mode.addHIDButtonCallback(MACRO_KEY_2, {HID_KEY_SHIFT_LEFT, HID_KEY_F9});
-
-
-
+    // build button intellij
+    mode.addHIDButtonCallback(MACRO_KEY_3, {HID_KEY_CONTROL_LEFT, HID_KEY_F9});
     // stop button intellij
     mode.addHIDButtonCallback(MACRO_KEY_4, {HID_KEY_CONTROL_LEFT, HID_KEY_F2});
+
+    // open terminal
+    mode.addHIDButtonCallback(MACRO_KEY_12, {HID_KEY_ALT_LEFT, HID_KEY_Q});
 
     return mode;
 }
