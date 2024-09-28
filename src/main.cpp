@@ -13,7 +13,12 @@
 #include "modes/FKeys.h"
 #include "modes/ProgrammingMode.h"
 
-void fancyStartup() {
+void startupAnimation() {
+    const bool led1 = digitalRead(LED_1);
+    const bool led2 = digitalRead(LED_2);
+    const bool led3 = digitalRead(LED_3);
+    const bool led4 = digitalRead(LED_4);
+
     digitalWrite(LED_1, HIGH);
     digitalWrite(LED_2, HIGH);
     digitalWrite(LED_3, HIGH);
@@ -34,6 +39,12 @@ void fancyStartup() {
     digitalWrite(LED_3, LOW);
     digitalWrite(LED_4, LOW);
     printf("Setup Complete\n");
+    delay(500);
+
+    digitalWrite(LED_1, led1);
+    digitalWrite(LED_2, led2);
+    digitalWrite(LED_3, led3);
+    digitalWrite(LED_4, led4);
 }
 
 void setup() {
@@ -54,7 +65,7 @@ void setup() {
     addMode(fKeyMode, MACRO_KEY_12);
     addMode(deepSleep, MACRO_KEY_13);
 
-    fancyStartup();
+    startupAnimation();
 }
 
 void loop() {
