@@ -5,6 +5,7 @@
 #ifndef DEEPSLEEPMODE_H
 #define DEEPSLEEPMODE_H
 
-ButtonMode getDeepSleepMode(int button);
+void checkShutdown(bool shuttingDown);
+void shutdown();
 
 #endif //DEEPSLEEPMODE_H

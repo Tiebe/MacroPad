@@ -8,7 +8,6 @@
 //#include "wifi/wifi_manager.h"
 #include <BLEDevice.h>
 #include "Adafruit_TinyUSB.h"
-#include "modes/DeepSleepMode.h"
 
 #include "modes/FKeys.h"
 #include "modes/ProgrammingMode.h"
@@ -59,11 +58,9 @@ void setup() {
 
     ButtonMode programming = getProgrammingMode(2);
     ButtonMode fKeyMode = getFKeyMode(12);
-    ButtonMode deepSleep = getDeepSleepMode(0);
 
     addMode(programming, MACRO_KEY_2);
     addMode(fKeyMode, MACRO_KEY_12);
-    addMode(deepSleep, MACRO_KEY_13);
 
     startupAnimation();
 }

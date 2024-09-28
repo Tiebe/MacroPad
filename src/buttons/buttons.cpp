@@ -5,6 +5,7 @@
 #include "main.h"
 #include "buttons/buttons.h"
 #include "buttons/ButtonMode.h"
+#include "power/deepSleep.h"
 
 #include <functional>
 #include <list>
@@ -67,10 +68,14 @@ void buttonsSetup() {
 }
 
 void processButtons() {
+    bool shuttingDown = true;
+
     // loop through all buttons and get their values
     for (ButtonData& button : DEFINED_BUTTONS) {
-        const bool newState = digitalRead(button.GPIO);
+        if (button.GPIO != FN_BUTTON && button.state) shuttingDown = false;
+        else if (button.GPIO == FN_BUTTON && !button.state) shuttingDown = false;
 
+        const bool newState = digitalRead(button.GPIO);
         // if button state changes, set new state
         if (newState != button.state) {
             button.state = newState;
@@ -97,6 +102,8 @@ void processButtons() {
             }
         }
     }
+
+    checkShutdown(shuttingDown);
 }
 
 void buttonsLoop() {
