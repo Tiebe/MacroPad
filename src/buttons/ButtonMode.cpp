@@ -79,7 +79,7 @@ void ButtonMode::writeLedState() {
     // printf(text.c_str());
     int i = 0;
     for (const LEDData led : DEFINED_LEDS) {
-        if ((this->ledState >> i) & 0x1 == 1) {
+        if ((this->ledState >> i & 0x1) == 1) {
             // std::string text = "Writing HIGH";
             // printf(text.c_str());
             digitalWrite(led.GPIO, HIGH);
