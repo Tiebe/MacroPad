@@ -46,15 +46,13 @@ void setup() {
     subghzSetup();
 
 
-    ButtonMode fKeyMode = getFKeyMode(12);
     ButtonMode programming = getProgrammingMode(2);
+    ButtonMode fKeyMode = getFKeyMode(12);
     ButtonMode deepSleep = getDeepSleepMode(0);
 
     addMode(programming, MACRO_KEY_2);
     addMode(fKeyMode, MACRO_KEY_12);
     addMode(deepSleep, MACRO_KEY_13);
-
-    esp_sleep_enable_ext0_wakeup(static_cast<gpio_num_t>(MACRO_KEY_13), 1);
 
     fancyStartup();
 }

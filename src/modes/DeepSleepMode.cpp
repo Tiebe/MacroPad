@@ -9,7 +9,15 @@
 ButtonMode getDeepSleepMode(int button) {
     ButtonMode mode(button);
 
-    mode.addButtonCallback(MACRO_KEY_1, [](int button, const bool state, bool controlState) -> void {
+
+    // all MACRO_KEYs
+    uint64_t mask = 0;
+    for (const auto gpio : DEFINED_BUTTONS) {
+        mask |= 1 << gpio.GPIO;
+    }
+    esp_sleep_enable_ext1_wakeup(mask, ESP_EXT1_WAKEUP_ANY_HIGH);
+
+    mode.addButtonCallback(MACRO_KEY_1, [](int, const bool, bool) -> void {
         // if (state && digitalRead(MACRO_KEY_4) && digitalRead(MACRO_KEY_16)) {
             digitalWrite(LED_1, HIGH);
             delay(200);
