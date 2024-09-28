@@ -10,6 +10,7 @@
 #include <esp32-hal-gpio.h>
 #include <HWCDC.h>
 #include <map>
+#include <vector>
 
 #include "leds/leds.h"
 #include "buttons/ButtonData.h"
@@ -27,6 +28,7 @@ public:
                buttonCallbacks);
     ButtonMode();
     int addButtonCallback(int gpio, const std::function<void(int button, bool state, bool controlState)>& callback);
+    int addHIDButtonCallback(int gpio, std::initializer_list<int> keys);
     void removeButtonCallback(const int id);
     void writeLedState();
 

@@ -7,6 +7,7 @@
 #include "buttons/ButtonMode.h"
 
 #include "buttons/buttons.h"
+#include "usb/usb.h"
 
 
 /**
@@ -52,6 +53,14 @@ int ButtonMode::addButtonCallback(const int gpio, const std::function<void(int b
     callbacks.insert(std::make_pair(next, std::make_pair(gpio, callback)));
 
     return next;
+}
+
+int ButtonMode::addHIDButtonCallback(int gpio, std::initializer_list<int> keys) {
+    return this->addButtonCallback(gpio, [keys](int, const bool state, bool) -> void {
+        for (const auto key : keys) {
+            setKey(key, state);
+        }
+    });
 }
 
 /**

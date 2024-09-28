@@ -11,18 +11,15 @@
 ButtonMode getProgrammingMode(int button) {
     ButtonMode mode(button);
 
-    mode.addButtonCallback(MACRO_KEY_1, [](int button, const bool state, bool controlState) -> void {
-        printf("Button 1 pressed\n");
-        setKey(HID_KEY_A, state);
-    });
+    // run button intellij
+    mode.addHIDButtonCallback(MACRO_KEY_1, {HID_KEY_SHIFT_LEFT, HID_KEY_F10});
+    // debug button intellij
+    mode.addHIDButtonCallback(MACRO_KEY_2, {HID_KEY_SHIFT_LEFT, HID_KEY_F9});
 
-    mode.addButtonCallback(MACRO_KEY_2, [](int button, bool state, bool controlState) -> void {
-        setKey(HID_KEY_B, state);
-    });
 
-    mode.addButtonCallback(MACRO_KEY_3, [](int button, bool state, bool controlState) -> void {
-        setKey(HID_KEY_C, state);
-    });
+
+    // stop button intellij
+    mode.addHIDButtonCallback(MACRO_KEY_4, {HID_KEY_CONTROL_LEFT, HID_KEY_F2});
 
     return mode;
 }
