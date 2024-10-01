@@ -12,7 +12,7 @@ bool led2 = false;
 bool led3 = false;
 bool led4 = false;
 
-#define SHUTDOWN_TIME 120
+#define SHUTDOWN_TIME 300
 
 void checkShutdown(const bool shuttingDown) {
     if (shuttingDown) {

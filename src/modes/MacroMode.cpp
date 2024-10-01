@@ -2,13 +2,13 @@
 // Created by KoenDR06 on 27/09/2024.
 //
 
-#include "modes/FKeys.h"
+#include "modes/MacroMode.h"
 
 #include "buttons/ButtonMode.h"
 #include "buttons/buttons.h"
 #include "usb/usb.h"
 
-ButtonMode getFKeyMode(int button) {
+ButtonMode getMacroMode(int button) {
     ButtonMode mode(button);
 
     mode.addHIDButtonCallback(MACRO_KEY_1, {HID_KEY_F13});

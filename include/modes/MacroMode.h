@@ -6,7 +6,7 @@
 #define FKEYS_H
 #include "buttons/ButtonMode.h"
 
-ButtonMode getFKeyMode(int button);
+ButtonMode getMacroMode(int button);
 
 
 #endif //FKEYS_H

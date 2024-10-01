@@ -5,11 +5,11 @@
 #include "leds/leds.h"
 #include "subghz/subghz.h"
 #include "usb/usb.h"
-//#include "wifi/wifi_manager.h"
 #include <BLEDevice.h>
 #include "Adafruit_TinyUSB.h"
 
-#include "modes/FKeys.h"
+#include "modes/MacroMode.h"
+#include "modes/NumPadMode.h"
 #include "modes/ProgrammingMode.h"
 
 void startupAnimation() {
@@ -56,11 +56,13 @@ void setup() {
     subghzSetup();
 
 
+    ButtonMode macroMode = getMacroMode(1);
     ButtonMode programming = getProgrammingMode(2);
-    ButtonMode fKeyMode = getFKeyMode(12);
+    ButtonMode numPadMode = getNumPadMode(3);
 
     addMode(programming, MACRO_KEY_2);
-    addMode(fKeyMode, MACRO_KEY_12);
+    addMode(macroMode, MACRO_KEY_1);
+    addMode(numPadMode, MACRO_KEY_3);
 
     startupAnimation();
 }
