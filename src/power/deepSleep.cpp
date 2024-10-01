@@ -52,13 +52,13 @@ void checkShutdown(const bool shuttingDown) {
 
 void shutdown() {
     digitalWrite(LED_1, LOW);
-    delay(200);
+    delay(100);
     digitalWrite(LED_2, LOW);
-    delay(200);
+    delay(100);
     digitalWrite(LED_3, LOW);
-    delay(200);
+    delay(100);
     digitalWrite(LED_4, LOW);
-    delay(200);
+    delay(500);
     printf("Bye bye o7\n");
 
 

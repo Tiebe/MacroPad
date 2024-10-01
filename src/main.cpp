@@ -22,7 +22,7 @@ void startupAnimation() {
     digitalWrite(LED_2, HIGH);
     digitalWrite(LED_3, HIGH);
     digitalWrite(LED_4, HIGH);
-    delay(200);
+    delay(100);
     digitalWrite(LED_1, LOW);
     digitalWrite(LED_2, LOW);
     digitalWrite(LED_3, LOW);
@@ -32,13 +32,13 @@ void startupAnimation() {
     digitalWrite(LED_2, HIGH);
     digitalWrite(LED_3, HIGH);
     digitalWrite(LED_4, HIGH);
-    delay(200);
+    delay(100);
     digitalWrite(LED_1, LOW);
     digitalWrite(LED_2, LOW);
     digitalWrite(LED_3, LOW);
     digitalWrite(LED_4, LOW);
     printf("Setup Complete\n");
-    delay(500);
+    delay(250);
 
     digitalWrite(LED_1, led1);
     digitalWrite(LED_2, led2);
