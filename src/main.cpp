@@ -1,16 +1,21 @@
 #include "main.h"
+
 #include "buttons/buttons.h"
 #include "buttons/ButtonMode.h"
 #include "ir/ir.h"
 #include "leds/leds.h"
 #include "subghz/subghz.h"
 #include "usb/usb.h"
-#include <BLEDevice.h>
-#include "Adafruit_TinyUSB.h"
+#include "wifi/wifi.h"
 
 #include "modes/MacroMode.h"
 #include "modes/NumPadMode.h"
 #include "modes/ProgrammingMode.h"
+
+#include "Adafruit_TinyUSB.h"
+#include <BLEDevice.h>
+#include <thread>
+#include <WiFi.h>
 
 void startupAnimation() {
     const bool led1 = digitalRead(LED_1);
@@ -54,6 +59,7 @@ void setup() {
     buttonsSetup();
     ledsSetup();
     subghzSetup();
+    wifiSetup();
 
 
     ButtonMode macroMode = getMacroMode(1);
@@ -70,4 +76,5 @@ void setup() {
 void loop() {
     buttonsLoop();
     usbLoop();
+    wifiLoop();
 }

@@ -6,5 +6,7 @@
 #define WIFI_H
 
 void wifiSetup();
+void wifiLoop();
+void makeHttpsRequest(const std::string& server_url, const std::string& http_method, std::string path);
 
 #endif //WIFI_H
